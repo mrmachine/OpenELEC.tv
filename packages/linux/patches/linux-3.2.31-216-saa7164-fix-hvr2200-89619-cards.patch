@@ -1,0 +1,32 @@
+From: Steven Toth <stoth@kernellabs.com>
+Date: Thu, 13 Sep 2012 12:21:32 +0000 (-0400)
+Subject: [media] saa7164: Experimental patch related to Image Corrupt driver errors.
+X-Git-Url: http://git.kernellabs.com/?p=stoth%2Fmedia_tree.git;a=commitdiff_plain;h=c7e5e5e04875b61ec0fed67fc3eac8398cd666c3
+
+[media] saa7164: Experimental patch related to Image Corrupt driver errors.
+
+Load Rev2 firmware for all rev2 cards, regardless of how well the rev3
+firmware appears to work for all cards.
+
+HVR2200 model #89619 cards were reporting Image Corrupt errors with the
+previous firmware, this patch addresses this, but has been intested
+across all other rev2 cards.
+
+Signed-off-by: Steven Toth <stoth@kernellabs.com>
+---
+
+diff --git a/drivers/media/pci/saa7164/saa7164-fw.c b/drivers/media/pci/saa7164/saa7164-fw.c
+index a266bf0..39a92bc 100644
+--- a/drivers/media/pci/saa7164/saa7164-fw.c
++++ b/drivers/media/pci/saa7164/saa7164-fw.c
+@@ -24,8 +24,8 @@
+ 
+ #include "saa7164.h"
+ 
+-#define SAA7164_REV2_FIRMWARE		"NXP7164-2010-03-10.1.fw"
+-#define SAA7164_REV2_FIRMWARE_SIZE	4019072
++#define SAA7164_REV2_FIRMWARE		"v4l-saa7164-1.0.2-3.fw"
++#define SAA7164_REV2_FIRMWARE_SIZE	4038864
+ 
+ #define SAA7164_REV3_FIRMWARE		"NXP7164-2010-03-10.1.fw"
+ #define SAA7164_REV3_FIRMWARE_SIZE	4019072
