@@ -15,10 +15,10 @@ across all other rev2 cards.
 Signed-off-by: Steven Toth <stoth@kernellabs.com>
 ---
 
-diff --git a/drivers/media/pci/saa7164/saa7164-fw.c b/drivers/media/pci/saa7164/saa7164-fw.c
+diff --git a/drivers/media/video/saa7164/saa7164-fw.c b/drivers/media/video/saa7164/saa7164-fw.c
 index a266bf0..39a92bc 100644
---- a/drivers/media/pci/saa7164/saa7164-fw.c
-+++ b/drivers/media/pci/saa7164/saa7164-fw.c
+--- a/drivers/media/video/saa7164/saa7164-fw.c
++++ b/drivers/media/video/saa7164/saa7164-fw.c
 @@ -24,8 +24,8 @@
  
  #include "saa7164.h"
