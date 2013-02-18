@@ -31,4 +31,5 @@ if [ -f /usr/share/XBMC/addons/os.openelec.settings/default_settings.xml ]; then
     cp /usr/share/XBMC/addons/os.openelec.settings/default_settings.xml \
        $HOME/.plexht/userdata/addon_data/os.openelec.settings/settings.xml
   fi
+
 fi
