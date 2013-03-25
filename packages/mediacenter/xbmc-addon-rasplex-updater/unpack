@@ -2,7 +2,7 @@
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
-#      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
+#      Copyright (C) 2013 Andreas Weinlein
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -22,10 +22,9 @@
 
 . config/options $1
 
-for addon in `find $PKG_BUILD/addons/ -name *.pvr`;do
-  ADDON=$(basename $(dirname $addon))
-  mkdir -p $INSTALL/usr/share/xbmc/addons/$ADDON
-    cp -PRf $PKG_BUILD/addons/$ADDON/addon/* $INSTALL/usr/share/xbmc/addons/$ADDON
-    cp -PRf $PKG_BUILD/addons/$ADDON/*.pvr $INSTALL/usr/share/xbmc/addons/$ADDON
-
-done
+# Unpack SRC
+cd $BUILD
+unzip -d $PKG_NAME-$PKG_VERSION -o ../sources/$PKG_NAME/$PKG_VERSION.zip
+mv $PKG_NAME-$PKG_VERSION/script.rasplex.update-*/* $PKG_NAME-$PKG_VERSION
+rm -r $PKG_NAME-$PKG_VERSION/script.rasplex.update-*
+rm -r $PKG_NAME-$PKG_VERSION/README*
