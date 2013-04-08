@@ -2629,13 +2629,13 @@ index fe86561..4c43e6c 100644
 +  if (buffer < 0)
      return;
  
--  double pts_media = m_av_clock->OMXMediaTime(false, false);
+-  double pts_media = m_av_clock->OMXMediaTime(false);
 -  ProcessOverlays(iGroupId, pts_media);
 -
 -  g_renderManager.FlipPage(CThread::m_bStop, m_iSleepEndTime / DVD_TIME_BASE, -1, FS_NONE);
 -
 -  m_iSleepEndTime = DVD_NOPTS_VALUE;
-+  double pts_overlay = m_av_clock->OMXMediaTime(false, false)
++  double pts_overlay = m_av_clock->OMXMediaTime(false)
 +                     + 2* (double)DVD_TIME_BASE / g_graphicsContext.GetFPS();
 +  ProcessOverlays(iGroupId, pts_overlay);
  
@@ -20028,42 +20028,6 @@ index 72718e5..aaa4702 100644
      bool m_videoVDPAUtelecine;
      bool m_videoVDPAUdeintSkipChromaHD;
      bool m_musicUseTimeSeeking;
--- 
-1.8.1.5
-
-
-From 82a52b56ca4756a818ae56550be3002c82630d73 Mon Sep 17 00:00:00 2001
-From: xbmc <fernetmenta@online.de>
-Date: Thu, 11 Oct 2012 13:01:08 +0200
-Subject: [PATCH 70/88] dvdplayer: correct determination if video is playing
-
----
- xbmc/cores/dvdplayer/DVDPlayer.cpp | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/xbmc/cores/dvdplayer/DVDPlayer.cpp b/xbmc/cores/dvdplayer/DVDPlayer.cpp
-index 3737419..890d99e 100644
---- a/xbmc/cores/dvdplayer/DVDPlayer.cpp
-+++ b/xbmc/cores/dvdplayer/DVDPlayer.cpp
-@@ -2382,9 +2382,16 @@ bool CDVDPlayer::IsPaused() const
- 
- bool CDVDPlayer::HasVideo() const
- {
--  if (m_pInputStream && m_pInputStream->IsStreamType(DVDSTREAM_TYPE_DVD)) return true;
-+  bool hasVideo(false);
- 
--  return m_SelectionStreams.Count(STREAM_VIDEO) > 0 ? true : false;
-+  if (m_pInputStream && m_pInputStream->IsStreamType(DVDSTREAM_TYPE_DVD))
-+    hasVideo = true;
-+  else if (m_SelectionStreams.Count(STREAM_VIDEO) > 0)
-+    hasVideo = true;
-+  else if (g_renderManager.IsConfigured())
-+    hasVideo = true;
-+
-+  return hasVideo;
- }
- 
- bool CDVDPlayer::HasAudio() const
 -- 
 1.8.1.5
 
