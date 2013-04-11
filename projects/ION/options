@@ -257,7 +257,7 @@
   VDPAU="yes"
 
 # Use VAAPI video acceleration (needs intel i965 driver and a supported card)
-  VAAPI="no"
+  VAAPI="yes"
 
 # Use XVBA video acceleration (needs AMD fglrx driver and a supported card)
   XVBA="no"
