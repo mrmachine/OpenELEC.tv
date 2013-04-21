@@ -1,4 +1,4 @@
-#/bin/sh -ax
+#/bin/sh
 
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
@@ -22,35 +22,38 @@
 
 . config/options $1
 
+# xbmc fails to build with LTO optimization
+  strip_lto
+
 # dont use some optimizations because of build problems
   LDFLAGS=`echo $LDFLAGS | sed -e "s|-Wl,--as-needed||"`
 
 # dont build parallel
-  MAKEFLAGS=-j1
+# MAKEFLAGS=-j1
 
-# strip compiler optimization
-  strip_lto
-
-# set python variables
   export PYTHON_VERSION="2.7"
   export PYTHON_CPPFLAGS="-I$SYSROOT_PREFIX/usr/include/python$PYTHON_VERSION"
   export PYTHON_LDFLAGS="-L$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION -lpython$PYTHON_VERSION"
   export PYTHON_SITE_PKG="$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION/site-packages"
   export ac_python_version="$PYTHON_VERSION"
 
-# configure the build
-export PKG_CONFIG_PATH=$SYSROOT_PREFIX/usr/lib/pkgconfig
+PLEX=$ROOT/$BUILD/$PKG_NAME-$PKG_VERSION
 
-cd $ROOT/$BUILD/$PKG_NAME-$PKG_VERSION
-[ ! -d config ] && mkdir config
-cd config
+mkdir -p $PLEX/build
+cd $PLEX/build
+rm -rf *
 
-cmake -DCMAKE_LIBRARY_PATH="$SYSROOT_PREFIX/usr/lib" -DCMAKE_PREFIX_PATH="$SYSROOT_PREFIX" -DCMAKE_INCLUDE_PATH="$SYSROOT_PREFIX/usr/include" -DCMAKE_BUILD_TYPE=Debug -DENABLE_DVD_DRIVE=on -DCOMPRESS_TEXTURES=off -DCMAKE_INSTALL_PREFIX=$INSTALL/usr $ROOT/$BUILD/$PKG_NAME-$PKG_VERSION/.
+cmake -DCMAKE_BUILD_TYPE=Debug \
+      -DCMAKE_INCLUDE_PATH="$SYSROOT_PREFIX/usr/include;$SYSROOT_PREFIX/usr/include/python2.7" \
+      -DCMAKE_INSTALL_PREFIX=$INSTALL/usr \
+      -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF \
+      -DCOMPRESS_TEXTURES=off \
+      -DENABLE_PYTHON=off \
+      -DLIBUSBDIR=$SYSROOT_PREFIX/usr \
+      -DOPTIONAL_INCLUDE_DIR=$SYSROOT_PREFIX/usr/include \
+      -DRPI_EXTERNAL_PYTHON_HOME=$SYSROOT_PREFIX/usr \
+      -DSWIG_DIR=$ROOT/$TOOLCHAIN \
+      -DSWIG_EXECUTABLE=$ROOT/$TOOLCHAIN/bin/swig \
+      $PLEX
 
-# make it so
 make -j1
-
-## Build Textures.xbt for mediastream
-#cd ../
-#chroot . /bin/sh -c "config/tools/TexturePacker/TexturePacker -input addons/skin.mediastream/Media/ -output Textures.xbt"
-#cp Textures.xbt $SYSROOT_PREFIX/opt/plexhometheater/share/XBMC/addons/skin.mediastream/Media/Textures.xbt
