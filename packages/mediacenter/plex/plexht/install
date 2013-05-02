@@ -70,7 +70,7 @@ cp $PKG_DIR/config/advancedsettings.xml $INSTALL/usr/share/XBMC/
 cp $PKG_DIR/config/guisettings.xml $INSTALL/usr/share/XBMC/system/
 cp $PKG_DIR/config/guisettings.xml $INSTALL/usr/share/XBMC/
 cp $PKG_DIR/config/Textures.xbt $INSTALL/usr/share/XBMC/addons/skin.mediastream/Media/.
-cp $PKG_DIR/profile.d/plex.conf /etc/profile.d/
+#cp $PKG_DIR/profile.d/plex.conf /etc/profile.d/
 chmod +x $INSTALL/usr/bin
 
 # overriding Splash image
