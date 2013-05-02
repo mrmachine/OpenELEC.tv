@@ -39,8 +39,8 @@
 
 PLEX=$ROOT/$BUILD/$PKG_NAME-$PKG_VERSION
 
-mkdir -p $PLEX/build
-cd $PLEX/build
+mkdir -p $PLEX/config
+cd $PLEX/config
 rm -rf *
 
 cmake -DCMAKE_BUILD_TYPE=Debug \
